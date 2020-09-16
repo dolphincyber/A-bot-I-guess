@@ -9,8 +9,9 @@ from youtube_search import YoutubeSearch
 client = commands.Bot(command_prefix = '.')
 client.remove_command("help")
 
-@client.event()
+@client.event
 async def on_ready():
+    print('Bot is ready')
     await client.change_presence(activity=discord.Game(name='.help'))
 
 #help
@@ -43,7 +44,7 @@ async def help(ctx, page=0):
 @client.command()
 async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
-    embed.add_field(name="**Bot version**", value="`V.0.0.7                  `", inline=True)
+    embed.add_field(name="**Bot version**", value="`V.0.0.8                  `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
     await ctx.send(embed=embed)
