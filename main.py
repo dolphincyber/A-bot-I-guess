@@ -46,7 +46,7 @@ async def help(ctx, page=0):
 @client.command()
 async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
-    embed.add_field(name="**Bot version**", value="`V.0.0.11                 `", inline=True)
+    embed.add_field(name="**Bot version**", value="`V.0.0.13                 `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
     await ctx.send(embed=embed)
@@ -128,6 +128,12 @@ async def on_member_join(member):
 @client.event
 async def on_member_leave(member):
     await member.send(f"Goodbye {member} :(")
+
+# google
+@client.command()
+async def google(ctx, *, search):
+    refinesearch=search.replace(" ", "+")
+    await ctx.send('https://www.google.com/search?q=' + refinesearch)
 
 # Watch
 @client.command()   
