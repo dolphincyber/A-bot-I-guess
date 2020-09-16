@@ -9,6 +9,10 @@ from youtube_search import YoutubeSearch
 client = commands.Bot(command_prefix = '.')
 client.remove_command("help")
 
+@client.event()
+async def on_ready():
+    await client.change_presence(activity=discord.Game(name='.help'))
+
 #help
 @client.command(pass_context=True)
 async def help(ctx, page=0):
@@ -152,4 +156,4 @@ async def eightball(ctx, *, question):
     embed.add_field(name=random.choice(responses), value="🎱🎱🎱🎱", inline=False)
     await ctx.send(embed=embed)
 
-client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.wufCR961l6nUi4xr7eT1GQD2Dn4')
+client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.7fP1qur1LfbjDIZkOdev6tF0hy0')
