@@ -38,6 +38,8 @@ async def help(ctx, page=0):
     if page == 2:
         embed = discord.Embed(title="Fun", description="", inline=False)
         embed.add_field(name="watch", value="look for a youtube video", inline = False)
+        embed.add_field(name="google", value="search google for something", inline = False)
+        embed.add_field(name="spotify", value="look for a song on spotify", inline = False)
         embed.add_field(name="eightball", value="ask the so called 'mAgIC' eight ball a question", inline = False)
         embed.set_footer(text=f"page 2 of 2")
         await ctx.send(embed=embed)
@@ -134,6 +136,12 @@ async def on_member_leave(member):
 async def google(ctx, *, search):
     refinesearch=search.replace(" ", "+")
     await ctx.send('https://www.google.com/search?q=' + refinesearch)
+
+# spotify
+@client.command()
+async def spotify(ctx, *, search):
+    refinesearch=search.replace(" ", "%20")
+    await ctx.send('https://open.spotify.com/search/' + refinesearch)
 
 # Watch
 @client.command()   
