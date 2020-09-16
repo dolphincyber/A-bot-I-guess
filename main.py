@@ -9,11 +9,37 @@ from youtube_search import YoutubeSearch
 client = commands.Bot(command_prefix = '.')
 client.remove_command("help")
 
+#help
+@client.command(pass_context=True)
+async def help(ctx, page=0):
+    if page == 0:
+        await ctx.send('Please check your Direct Messages for the help bar.')
+        embed = discord.Embed(title="Cury Bot Help Page", description="Go to the page you need by typing the command with the page number after it. (e.g. .help 1)", color=3447003)
+        embed.add_field(name="`1` Server Utilities.", value="****", inline=False)
+        embed.add_field(name="`2` Fun.", value="****", inline=False)
+        embed.set_footer(text="Commands can be used in your Direct Messages with the bot.")
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/626633106803392513/755532296903196852/Curry.jpg')
+        await ctx.author.send(embed=embed)
+    if page == 1:
+        embed = discord.Embed(title="Server Utilities", description="some server utils", inline=False)
+        embed.add_field(name="clear", value="Clear mesages", inline=False)
+        embed.add_field(name="ban", value="use the ban hammer", inline=False)
+        embed.add_field(name="unban", value="uno reverse card the ban hammer", inline=False)
+        embed.add_field(name="kick", value="u know, just boot someone out of the server", inline=False)
+        embed.add_field(name="mute", value="shut someone up. thats it.", inline=False)
+        embed.add_field(name="unmute", value="UN-shut someone up. idek why you would use this smh", inline=False)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/626633106803392513/755532296903196852/Curry.jpg')
+        await ctx.author.send(embed=embed)
+    if page == 2:
+        embed = discord.Embed(title="Fun", description="", inline=False)
+        embed.add_field(name="watch", value="look for a youtube video", inline = False)
+        embed.add_field(name="eightball", value="ask the so called 'mAgIC' eight ball a question", inline = False)
+
 #info
 @client.command()
 async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
-    embed.add_field(name="**Bot version**", value="`V.0.0.4                  `", inline=True)
+    embed.add_field(name="**Bot version**", value="`V.0.0.7                  `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
     await ctx.send(embed=embed)
@@ -118,9 +144,12 @@ async def eightball(ctx, *, question):
         "My reply is no.",
         "My sources say no.",
         "Outlook not so good.",
-        "Very doubtful."]
+        "Very doubtful."
+        "No. Just plain no.",
+        "NO DEFINITELY NOT. DON'T EVEN THINK ABOUT IT."
+        ]
     embed = discord.Embed(title=question, description="    🎱🎱🎱", color=8388736)
     embed.add_field(name=random.choice(responses), value="🎱🎱🎱🎱", inline=False)
     await ctx.send(embed=embed)
 
-client.run('')
+client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.wufCR961l6nUi4xr7eT1GQD2Dn4')
