@@ -27,11 +27,11 @@ async def help(ctx, page=0):
     if page == 1:
         embed = discord.Embed(title="Server Utilities", description="some server utils", inline=False)
         embed.add_field(name="clear", value="Clear mesages", inline=False)
-        embed.add_field(name="ban", value="use the ban hammer", inline=False)
-        embed.add_field(name="unban", value="uno reverse card the ban hammer", inline=False)
-        embed.add_field(name="kick", value="u know, just boot someone out of the server", inline=False)
-        embed.add_field(name="mute", value="shut someone up. thats it.", inline=False)
-        embed.add_field(name="unmute", value="UN-shut someone up. idek why you would use this smh", inline=False)
+        # embed.add_field(name="ban", value="use the ban hammer", inline=False)
+        # embed.add_field(name="unban", value="uno reverse card the ban hammer", inline=False)
+        # embed.add_field(name="kick", value="u know, just boot someone out of the server", inline=False)
+        # embed.add_field(name="mute", value="shut someone up. thats it.", inline=False)
+        # embed.add_field(name="unmute", value="UN-shut someone up. idek why you would use this smh", inline=False)
         embed.set_footer(text=f"page 1 of 2")
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/626633106803392513/755532296903196852/Curry.jpg')
         await ctx.send(embed=embed)
@@ -57,72 +57,80 @@ async def info(ctx):
 async def clear(ctx, amount):
     await ctx.channel.purge(limit = amount + 1)
 
-# Kick
-@client.command()
-@commands.has_permissions(kick_members=True)
-async def kick(ctx, member : discord.Member, *,reason=None):
-    await member.kick(reason=reason)
-    embed = discord.Embed(title=f"{member} has been kicked", description=str(reason), color=0)
-    await ctx.send(embed=embed)
+# # Kick
+# @client.command()
+# @commands.has_permissions(kick_members=True)
+# async def kick(ctx, member : discord.Member, *,reason=None):
+#     await member.kick(reason=reason)
+#     embed = discord.Embed(title=f"{member} has been kicked", description=str(reason), color=0)
+#     await ctx.send(embed=embed)
 
-# Ban
-@client.command()
-@commands.has_permissions(ban_members=True)
-async def ban(ctx, member : discord.Member, *,reason=None):
-    await member.ban(reason=reason)
-    embed = discord.Embed(title=f"{member} has been banned", description=str(reason), color=0)
-    await ctx.send(embed=embed)
+# # Ban
+# @client.command()
+# @commands.has_permissions(ban_members=True)
+# async def ban(ctx, member : discord.Member, *,reason=None):
+#     await member.ban(reason=reason)
+#     embed = discord.Embed(title=f"{member} has been banned", description=str(reason), color=0)
+#     await ctx.send(embed=embed)
 
-# Unban
-@client.command()
-async def unban(ctx, *, member):
-    banned_users = await ctx.guild.bans()
-    member_name, member_discriminator = member.split("#")
+# # Unban
+# @client.command()
+# async def unban(ctx, *, member):
+#     banned_users = await ctx.guild.bans()
+#     member_name, member_discriminator = member.split("#")
 
-    for ban_entry in banned_users:
-        user = ban_entry.user
+#     for ban_entry in banned_users:
+#         user = ban_entry.user
 
-        if (user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user)
-            await ctx.send(f'{user.name}#{user.discriminator} has been unbanned.')
-            return
+#         if (user.name, user.discriminator) == (member_name, member_discriminator):
+#             await ctx.guild.unban(user)
+#             await ctx.send(f'{user.name}#{user.discriminator} has been unbanned.')
+#             return
 
-# Mute
-@client.command()
-async def mute(ctx, *, member : discord.Member):
-    guild = ctx.guild
+# # Mute
+# @client.command()
+# async def mute(ctx, *, member : discord.Member):
+#     guild = ctx.guild
 
-    for role in guild.roles:
-        if role.name == "Muted":
-            await member.add_roles(role)
-            await ctx.send("{} has {} been muted" .format(member.mention,ctx.author.mention))
-            return
+#     for role in guild.roles:
+#         if role.name == "Muted":
+#             await member.add_roles(role)
+#             await ctx.send("{} has {} been muted" .format(member.mention,ctx.author.mention))
+#             return
 
-            overwrite = discord.PermissionOverwrite(send_messages=False)
-            newRole = await guild.create_role(name="Muted")
+#             overwrite = discord.PermissionOverwrite(send_messages=False)
+#             newRole = await guild.create_role(name="Muted")
 
-            for channel in guild.text_channels:
-                await guild.channel.set_permissions(newRole,overwrite=overwrite)
+#             for channel in guild.text_channels:
+#                 await guild.channel.set_permissions(newRole,overwrite=overwrite)
 
-            await member.add_roles(newRole)
-            await ctx.send("{} has {} has been muted" .format(member.mention,ctx.author.mention))
+#             await member.add_roles(newRole)
+#             await ctx.send("{} has {} has been muted" .format(member.mention,ctx.author.mention))
 
-# Unmute
-@client.command()
-async def unmute(ctx, *, member : discord.Member):
-    guild = ctx.guild
+# # Unmute
+# @client.command()
+# async def unmute(ctx, *, member : discord.Member):
+#     guild = ctx.guild
 
-    for role in guild.roles:
-        if role.name == "Muted":
-            await member.remove_roles(role)
-            await ctx.send("{} has {} has been unmuted" .format(member.mention,ctx.author.mention))
-            return
+#     for role in guild.roles:
+#         if role.name == "Muted":
+#             await member.remove_roles(role)
+#             await ctx.send("{} has {} has been unmuted" .format(member.mention,ctx.author.mention))
+#             return
 
 # base64
 # @client.command()
 
+# events
+@client.event
+async def on_member_join(member):
+    await member.send(f"Welcome {member}!")
+@client.event
+async def on_member_leave(member):
+    await member.send(f"Goodbye {member} :(")
+
 # Watch
-@client.command()
+@client.command()   
 async def watch(ctx, *, search):
      results = YoutubeSearch(search, max_results=1).to_dict()
      x = results[0]
