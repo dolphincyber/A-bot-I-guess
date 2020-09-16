@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import asyncio
 import random
+import base64
+
 
 client = commands.Bot(command_prefix = '.')
 client.remove_command("help")
@@ -9,7 +11,7 @@ client.remove_command("help")
 # clear
 @client.command()
 @commands.has_permissions(manage_messages=True)
-async def clear(ctx, amount = 5):
+async def clear(ctx, amount):
     await ctx.channel.purge(limit = amount + 1)
 
 # Kick
@@ -72,6 +74,15 @@ async def unmute(ctx, *, member : discord.Member):
             await member.remove_roles(role)
             await ctx.send("{} has {} has been unmuted" .format(member.mention,ctx.author.mention))
             return
+
+# base64
+async def b64(ctx, *, message):
+    message_bytes = message.encode('ascii')
+    base64_bytes = base64.b64encode(message_bytes)
+    base64_message = base64_bytes.decode('ascii')
+    embed = discord.Embed(title=message, description="decoding using base64...", color=8388736)
+    embed.add_field(name=random.choice(base64_message), value="done!", inline=False)
+    await ctx.send(embed=embed)
 
 # 8ball
 @client.command()
