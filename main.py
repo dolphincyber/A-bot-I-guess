@@ -3,11 +3,21 @@ from discord.ext import commands
 import asyncio
 import random
 import base64
+from youtube_search import YoutubeSearch
 
 
 client = commands.Bot(command_prefix = '.')
 client.remove_command("help")
 
+#info
+@client.command()
+async def info(ctx):
+    embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
+    embed.add_field(name="**Bot version**", value="`V.0.0.4                  `", inline=True)
+    embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
+    embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
+    await ctx.send(embed=embed)
+    
 # clear
 @client.command()
 @commands.has_permissions(manage_messages=True)
@@ -76,13 +86,14 @@ async def unmute(ctx, *, member : discord.Member):
             return
 
 # base64
-async def b64(ctx, *, message):
-    message_bytes = message.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
-    embed = discord.Embed(title=message, description="decoding using base64...", color=8388736)
-    embed.add_field(name=random.choice(base64_message), value="done!", inline=False)
-    await ctx.send(embed=embed)
+# @client.command()
+
+# Watch
+@client.command()
+async def watch(ctx, *, search):
+     results = YoutubeSearch(search, max_results=1).to_dict()
+     x = results[0]
+     await ctx.send('https://www.youtube.com' + x['url_suffix'])
 
 # 8ball
 @client.command()
