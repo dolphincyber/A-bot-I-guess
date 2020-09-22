@@ -4,7 +4,8 @@ import asyncio
 import random
 import base64
 from youtube_search import YoutubeSearch
-
+import os
+import json
 
 client = commands.Bot(command_prefix = '.')
 client.remove_command("help")
@@ -58,6 +59,17 @@ async def info(ctx):
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount):
     await ctx.channel.purge(limit = amount + 1)
+
+@client.command()
+async def botannounce(ctx, *, code):
+    verfied="jKI8ncOKTQ5dBf"
+    if code == verfied:
+        await ctx.send("check your cmd line")
+        announcement=input("what do you want to announce?\n")
+        await ctx.channel.purge(limit = 2 + 1)
+        await ctx.send(announcement)
+    if code != verfied:
+        await ctx.send("you aren't the bot creator or an admin!!!")
 
 # # Kick
 # @client.command()
@@ -181,4 +193,51 @@ async def eightball(ctx, *, question):
     embed.add_field(name=random.choice(responses), value="🎱🎱🎱🎱", inline=False)
     await ctx.send(embed=embed)
 
-client.run('')
+### Currency???
+# Check for file
+if os.path.exists('amounts.json'):
+   with open('amounts.json', 'r') as file:
+       amounts = json.load(file)
+else:
+   amounts = {}
+# Save file
+def _save():
+   with open('amounts.json', 'w+') as f:
+       json.dump(amounts, f)
+
+#start
+@client.command(pass_context=True)
+async def start(ctx):
+   id = str(ctx.message.author.id)
+   if id not in amounts.keys():
+       amounts[id]=0
+       await ctx.send("You are now registered")
+       _save()
+   else:
+       await ctx.send("You already have an account")
+
+#bal
+@client.command(pass_context=True)
+async def bal(ctx):
+   id = str(ctx.message.author.id)
+   if id in amounts:
+       embed = discord.Embed(
+           colour = discord.Colour.green()
+       )
+       embed.add_field(name='Your balance:', value=amounts[id])
+       embed.set_footer(text="look at all that curry")
+       await ctx.send(embed=embed)
+   else:
+       await ctx.send("You do not have an account")
+   await asyncio.sleep(15)
+
+# test
+@client.command()
+async def add(ctx, *, amount):
+    amount=int(amount)
+    id = str(ctx.message.author.id)
+    if id in amounts:
+        amounts[id]
+        amounts[id] += amount
+
+client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.3wvp_SnYuCzl1cSDz5PsHYUIAKw')
