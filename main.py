@@ -51,6 +51,7 @@ async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
     embed.add_field(name="**Bot version**", value="`V.0.1.0                 `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
+    embed.add_field(name="**contributors**", value="`ALoneParadox#8583, Frostt#1324`")
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
     await ctx.send(embed=embed)
     
@@ -218,21 +219,34 @@ async def start(ctx):
 
 #bal
 @client.command(pass_context=True)
+@commands.cooldown(1, 10, commands.BucketType.user)
 async def bal(ctx):
-   id = str(ctx.message.author.id)
-   if id in amounts:
-       embed = discord.Embed(
+    id = str(ctx.message.author.id)
+    if id in amounts:
+        embed = discord.Embed(
            colour = discord.Colour.green()
-       )
-       embed.add_field(name='Your balance:', value=amounts[id])
-       embed.set_footer(text="look at all that curry")
-       await ctx.send(embed=embed)
-   else:
-       await ctx.send("You do not have an account")
-   await asyncio.sleep(15)
+        )
+        embed.add_field(name='Your balance:', value=amounts[id])
+        embed.set_footer(text="look at all that curry")
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("You do not have an account")
+    await asyncio.sleep(15)
+@bal.error
+async def mine_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = '{:.2f}s'.format(error.retry_after)
+        embed=discord.Embed(
+            colour = discord.Colour.red()
+        )
+        embed.add_field(name='You already ran this command! Please try again in ', value=msg)
+        await ctx.send(embed=embed)
+    else:
+        raise error
 
-# test
+# cook
 @client.command()
+@commands.cooldown(1, 45, commands.BucketType.user)
 async def cook(ctx):
     amount=random.randint(0, 300)
     amount=int(amount)
@@ -243,5 +257,45 @@ async def cook(ctx):
         amounts[id] += amount
         with open('amounts.json', 'w+') as f:
             json.dump(amounts, f)
+@cook.error
+async def mine_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = '{:.2f}s'.format(error.retry_after)
+        embed=discord.Embed(
+            colour = discord.Colour.red()
+        )
+        embed.add_field(name='You already ran this command! Please try again in ', value=msg)
+        await ctx.send(embed=embed)
+    else:
+        raise error
+
+# daily
+@client.command()
+@commands.cooldown(1, 86400, commands.BucketType.user)
+async def daily(ctx):
+    id = str(ctx.message.author.id)
+    embed=discord.Embed(
+        colour = discord.Colour.blue()
+    )
+    embed.add_field(name='Daily bonus for ', value="2500 coins")
+    embed.set_footer(text="come back tommorow for another bonus!")
+    await ctx.send(embed=embed)
+    if id in amounts:
+        amounts[id]
+        amounts[id] += 2500
+        with open('amounts.json', 'w+') as f:
+            json.dump(amounts, f)
+@daily.error
+async def mine_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = '{:.2f}s'.format(error.retry_after)
+        embed=discord.Embed(
+            colour = discord.Colour.red()
+        )
+        embed.add_field(name='You already ran this command! Please try again in ', value=msg)
+        await ctx.send(embed=embed)
+    else:
+        raise error
+
 
 client.run('')
