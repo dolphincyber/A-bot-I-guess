@@ -49,7 +49,7 @@ async def help(ctx, page=0):
 @client.command()
 async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
-    embed.add_field(name="**Bot version**", value="`V.0.0.14                 `", inline=True)
+    embed.add_field(name="**Bot version**", value="`V.0.1.0                 `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
     await ctx.send(embed=embed)
@@ -202,7 +202,7 @@ else:
    amounts = {}
 # Save file
 def _save():
-   with open('amounts.json', 'w+') as f:
+    with open('amounts.json', 'w+') as f:
        json.dump(amounts, f)
 
 #start
@@ -233,11 +233,15 @@ async def bal(ctx):
 
 # test
 @client.command()
-async def add(ctx, *, amount):
+async def cook(ctx):
+    amount=random.randint(0, 300)
     amount=int(amount)
+    await ctx.send("you cooked some curry for your friends and they gave you " + str(amount) + " coins.")
     id = str(ctx.message.author.id)
     if id in amounts:
         amounts[id]
         amounts[id] += amount
+        with open('amounts.json', 'w+') as f:
+            json.dump(amounts, f)
 
-client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.3wvp_SnYuCzl1cSDz5PsHYUIAKw')
+client.run('')
