@@ -33,7 +33,7 @@ async def help(ctx, page=0):
         # embed.add_field(name="kick", value="u know, just boot someone out of the server", inline=False)
         # embed.add_field(name="mute", value="shut someone up. thats it.", inline=False)
         # embed.add_field(name="unmute", value="UN-shut someone up. idek why you would use this smh", inline=False)
-        embed.set_footer(text=f"page 1 of 2")
+        embed.set_footer(text=f"page 1 of 3")
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/626633106803392513/755532296903196852/Curry.jpg')
         await ctx.send(embed=embed)
     if page == 2:
@@ -42,14 +42,18 @@ async def help(ctx, page=0):
         embed.add_field(name="google", value="search google for something", inline = False)
         embed.add_field(name="spotify", value="look for a song on spotify", inline = False)
         embed.add_field(name="eightball", value="ask the so called 'mAgIC' eight ball a question", inline = False)
-        embed.set_footer(text=f"page 2 of 2")
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/626633106803392513/755532296903196852/Curry.jpg')
+        embed.set_footer(text=f"page 2 of 3")
         await ctx.send(embed=embed)
+    if page == 3:
+        embed = discord.Embed(title="currency", description="", inline=False)
+
 
 #info
 @client.command()
 async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
-    embed.add_field(name="**Bot version**", value="`V.0.1.0                 `", inline=True)
+    embed.add_field(name="**Bot version**", value="`V.0.1.2                 `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
     embed.add_field(name="**contributors**", value="`ALoneParadox#8583, Frostt#1324`")
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
@@ -233,7 +237,7 @@ async def bal(ctx):
         await ctx.send("You do not have an account")
     await asyncio.sleep(15)
 @bal.error
-async def mine_error(ctx, error):
+async def cmd_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = '{:.2f}s'.format(error.retry_after)
         embed=discord.Embed(
@@ -258,7 +262,7 @@ async def cook(ctx):
         with open('amounts.json', 'w+') as f:
             json.dump(amounts, f)
 @cook.error
-async def mine_error(ctx, error):
+async def cook_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = '{:.2f}s'.format(error.retry_after)
         embed=discord.Embed(
@@ -286,7 +290,85 @@ async def daily(ctx):
         with open('amounts.json', 'w+') as f:
             json.dump(amounts, f)
 @daily.error
-async def mine_error(ctx, error):
+async def daily_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = '{:.2f}s'.format(error.retry_after)
+        embed=discord.Embed(
+            colour = discord.Colour.red()
+        )
+        embed.add_field(name='You already ran this command! Please try again in ', value=msg)
+        await ctx.send(embed=embed)
+    else:
+        raise error
+
+# beg
+@client.command()
+@commands.cooldown(1, 60, commands.BucketType.user)
+async def beg(ctx, ans="Z"):
+    id = str(ctx.message.author.id)
+    if ans == "Z":
+        await ctx.send("Where do you want to beg at?\n`S` Street\n`K` Soup kitchen\n`R`That random guy's house\n`A` In the middle of an airport")
+    if ans == "S":
+        poss=random.randint(0,100)
+        if poss > 80:
+            await ctx.send("You wernt being careful and got a little too close to the cars. Needless to say, you were ran over and died.")
+            if id in amounts:
+                amounts[id]
+                amounts[id]=0
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
+        num=random.randint(0, 329)
+        await ctx.send("So you didn't get run over by a car, and managed to get " + str(num) + " coins from people who liked the smell of your curry.")
+        if id in amounts:
+            amounts[id]
+            amounts[id] += num
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
+    if ans == "K":
+        poss=random.randint(0,100)
+        if poss > 75:
+            await ctx.send('Bro what were you thinking? This is a SOUP kitchen not a "beging for people to pay me for my curry" kitchen.')
+            if id in amounts:
+                amounts[id]
+                amounts[id]=0
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
+        num=random.randint(0,250)
+        await ctx.send("The people at the kitchen like curry better than soup, and the manager payed you " + str(num) + " coins for your secret recipe.")
+        if id in amounts:
+            amounts[id]
+            amounts[id] += num
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
+    if ans == "R":
+        num=random.randint(0,1)
+        await ctx.send("bruh. You serious? well at least you managed to find " + str(num) + " coins lying arround the couch")
+        if id in amounts:
+            amounts[id]
+            amounts[id] += num
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
+    if ans == "A":
+        poss=random.randint(0,100)
+        if poss > 50:
+            await ctx.send('dude I told you to not get close to the airplanes.')
+            if id in amounts:
+                amounts[id]
+                amounts[id]=0
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
+        num=random.randint(0,999)
+        await ctx.send("lucky you! you manged to steal " + str(num) + " coins from under the pilot's noses.")
+        if id in amounts:
+            amounts[id]
+            amounts[id] += num
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
+@beg.error
+async def beg_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = '{:.2f}s'.format(error.retry_after)
         embed=discord.Embed(
