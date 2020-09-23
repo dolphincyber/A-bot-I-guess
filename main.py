@@ -250,7 +250,7 @@ async def cmd_error(ctx, error):
 
 # cook
 @client.command()
-@commands.cooldown(1, 45, commands.BucketType.user)
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def cook(ctx):
     amount=random.randint(0, 300)
     amount=int(amount)
@@ -303,12 +303,12 @@ async def daily_error(ctx, error):
 
 # beg
 @client.command()
-@commands.cooldown(1, 60, commands.BucketType.user)
-async def beg(ctx, ans="Z"):
+@commands.cooldown(1, 45, commands.BucketType.user)
+async def beg(ctx):
     id = str(ctx.message.author.id)
-    if ans == "Z":
-        await ctx.send("Where do you want to beg at?\n`S` Street\n`K` Soup kitchen\n`R`That random guy's house\n`A` In the middle of an airport")
-    if ans == "S":
+    await ctx.send("Where do you want to beg at?\n`S` Street\n`K` Soup kitchen\n`R`That random guys house\n`A` In the middle of an airport")
+    ans = await ctx.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+    if ans.content.lower() == "s":
         poss=random.randint(0,100)
         if poss > 80:
             await ctx.send("You wernt being careful and got a little too close to the cars. Needless to say, you were ran over and died.")
@@ -325,7 +325,7 @@ async def beg(ctx, ans="Z"):
             amounts[id] += num
             with open('amounts.json', 'w+') as f:
                 json.dump(amounts, f)
-    if ans == "K":
+    if ans.content.lower() == "k":
         poss=random.randint(0,100)
         if poss > 75:
             await ctx.send('Bro what were you thinking? This is a SOUP kitchen not a "beging for people to pay me for my curry" kitchen.')
@@ -342,7 +342,7 @@ async def beg(ctx, ans="Z"):
             amounts[id] += num
             with open('amounts.json', 'w+') as f:
                 json.dump(amounts, f)
-    if ans == "R":
+    if ans.content.lower() == "r":
         num=random.randint(0,1)
         await ctx.send("bruh. You serious? well at least you managed to find " + str(num) + " coins lying arround the couch")
         if id in amounts:
@@ -350,7 +350,7 @@ async def beg(ctx, ans="Z"):
             amounts[id] += num
             with open('amounts.json', 'w+') as f:
                 json.dump(amounts, f)
-    if ans == "A":
+    if ans.content.lower() == "a":
         poss=random.randint(0,100)
         if poss > 50:
             await ctx.send('dude I told you to not get close to the airplanes.')
