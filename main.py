@@ -522,4 +522,4 @@ async def beg_error(ctx, error):
         raise error
 
 
-client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.X4R2oTUi84qj-5lsIGbPS76uwkk')
+client.run('')
