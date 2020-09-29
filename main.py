@@ -20,8 +20,9 @@ async def on_ready():
 async def help(ctx, page=0):
     if page == 0:
         embed = discord.Embed(title="Nebula Help Page", description="Go to the page you need by typing the command with the page number after it. (e.g. .help 1)", color=3447003)
-        embed.add_field(name="`1` Server Utilities.", value="****", inline=False)
-        embed.add_field(name="`2` Fun.", value="****", inline=False)
+        embed.add_field(name="`1` Server Utilities", value="****", inline=False)
+        embed.add_field(name="`2` Fun", value="****", inline=False)
+        embed.add_field(name="`3` Currency", value="****", inline=False)
         embed.set_footer(text="home page")
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/643685845953675307/760220420916903996/Untitled.jpg')
         await ctx.send(embed=embed)
@@ -54,7 +55,14 @@ async def help(ctx, page=0):
         embed.add_field(name="daily", value="get your daily boost of coins", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/643685845953675307/760220420916903996/Untitled.jpg')
         embed.set_footer(text=f"page 3 of 3")
-        
+        await ctx.send(embed=embed)
+
+# rulemake
+@client.command()
+@commands.has_permissions(administrator=True)
+async def rulemake(ctx, *, rule):
+    await ctx.channel.purge(limit = 1 + 1)
+    await ctx.send("" + rule)
 
 #info
 @client.command()
@@ -251,7 +259,7 @@ async def shop(ctx, *,page=0):
     if id in amounts:
         if page == 0:
             embed = discord.Embed(title='Shop', description="buy some EPIC stuff here", colour = discord.Colour.blurple())
-            embed.add_field(name='Pages', value="**** - ____ - \n**** - ____ - \n**** - ____ - \n**** - ____ -", inline=False)
+            embed.add_field(name='Pages', value="`1` __Tools__\n`2` __Collectables__\n`3` __Special__\n**** - ____ -", inline=False)
             embed.set_footer(text="Page 0 of 3\ndo shop page_number to go to the page you want")
             await ctx.send(embed=embed)
         if page == 1:
@@ -320,7 +328,7 @@ async def bal_error(ctx, error):
 
 # cook
 @client.command()
-@commands.cooldown(1, 0, commands.BucketType.user)
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def collect(ctx):
     amount=random.randint(0, 300)
     amount=int(amount)
@@ -398,7 +406,7 @@ async def beg(ctx):
     ans = await ctx.bot.wait_for('message', check=lambda message: message.author == ctx.author)
     if ans.content.lower() == "s":
         poss=random.randint(0,100)
-        if poss > 80:
+        if poss > 85:
             await ctx.send("You wernt being careful and got a little too close to the cars. Needless to say, you were ran over and died.")
             if id in amounts:
                 amounts[id]
@@ -433,7 +441,7 @@ async def beg(ctx):
                 json.dump(amounts, f)
     if ans.content.lower() == "h":
         poss=random.randint(0,100)
-        if poss > 75:
+        if poss > 80:
             await ctx.send('Famous last words: "i wont get covid here lol".')
             if id in amounts:
                 amounts[id]
@@ -476,7 +484,7 @@ async def beg(ctx):
                 json.dump(amounts, f)
     if ans.content.lower() == "a":
         poss=random.randint(0,100)
-        if poss > 50:
+        if poss > 75:
             await ctx.send('dude I told you to not get close to the airplanes.')
             if id in amounts:
                 amounts[id]
