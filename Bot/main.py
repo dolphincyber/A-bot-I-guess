@@ -15,6 +15,11 @@ async def on_ready():
     print('Bot is ready')
     await client.change_presence(activity=discord.Game(name='.help'))
 
+# invite
+@client.command()
+async def invite(ctx):
+    await ctx.send("here is the link to invite the bot:\nhttps://discord.com/api/oauth2/authorize?client_id=755533232417800192&permissions=8&scope=bot")
+
 #help
 @client.command(pass_context=True)
 async def help(ctx, page=0):
@@ -29,11 +34,6 @@ async def help(ctx, page=0):
     if page == 1:
         embed = discord.Embed(title="Server Utilities", description="some server utils", inline=False)
         embed.add_field(name="clear", value="Clear mesages", inline=False)
-        # embed.add_field(name="ban", value="use the ban hammer", inline=False)
-        # embed.add_field(name="unban", value="uno reverse card the ban hammer", inline=False)
-        # embed.add_field(name="kick", value="u know, just boot someone out of the server", inline=False)
-        # embed.add_field(name="mute", value="shut someone up. thats it.", inline=False)
-        # embed.add_field(name="unmute", value="UN-shut someone up. idek why you would use this smh", inline=False)
         embed.set_footer(text=f"page 1 of 3")
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/643685845953675307/760220420916903996/Untitled.jpg')
         await ctx.send(embed=embed)
@@ -60,9 +60,21 @@ async def help(ctx, page=0):
 # rulemake
 @client.command()
 @commands.has_permissions(administrator=True)
-async def rulemake(ctx, *, rule):
-    await ctx.channel.purge(limit = 1 + 1)
-    await ctx.send("" + rule)
+async def rulemake(ctx):
+    run=1
+    while run==1:
+        rule = await ctx.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+        if rule == "done":
+            run=0
+        else:
+            await ctx.channel.purge(limit = 1 + 1)
+            await ctx.send("🔒" + str(rule))
+
+
+# poll
+#@client.command()
+#async def poll(ctx, *, question, option1="nothing", option2="nothing", option3="nothing", option4="nothing", option5="nothing"):
+#    embed=discord.embed(title=)
 
 #info
 @client.command()
@@ -162,17 +174,6 @@ async def bug_error(ctx, error):
 #             await member.remove_roles(role)
 #             await ctx.send("{} has {} has been unmuted" .format(member.mention,ctx.author.mention))
 #             return
-
-# base64
-# @client.command()
-
-# events
-@client.event
-async def on_member_join(member):
-    await member.send(f"Welcome {member}!")
-@client.event
-async def on_member_leave(member):
-    await member.send(f"Goodbye {member} :(")
 
 # google
 @client.command()
@@ -335,28 +336,59 @@ async def collect(ctx):
     chance=random.randint(0,100)
     if chance > 70 and chance < 80:
         await ctx.send("You collected " + str(amount) + " coins, AND a 🍬 **Breath Mint**!!!")
+        id = str(ctx.message.author.id)
+        if id in amounts:
+            amounts[id]
+            amounts[id] += amount
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
         return
     if chance > 80 and chance < 90:
         await ctx.send("You collected " + str(amount) + " coins, AND a 🧀 **cheese slices**!!!")
+        id = str(ctx.message.author.id)
+        if id in amounts:
+            amounts[id]
+            amounts[id] += amount
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
         return
     if chance > 90 and chance < 95:
         await ctx.send("You collected " + str(amount) + " coins, AND a 🎻 **violin**!!!")
+        id = str(ctx.message.author.id)
+        if id in amounts:
+            amounts[id]
+            amounts[id] += amount
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
         return
     if chance > 95 and chance < 95:
         await ctx.send("You collected " + str(amount*2) + " coins. If you didn't know, you got DOUBLE THE COINS!")
+        id = str(ctx.message.author.id)
+        if id in amounts:
+            amounts[id]
+            spcamt=amount*2
+            amounts[id] += spcamt
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
         return
     if chance > 99:
         await ctx.send("You collected " + str(amount) + " coins, AND a 🌌 **galaxy badge**!!!!!!!!! LUCKY!!!")
+        id = str(ctx.message.author.id)
+        if id in amounts:
+            amounts[id]
+            amounts[id] += amount
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
         return
     else:
         await ctx.send("You collected " + str(amount) + " coins.")
+        id = str(ctx.message.author.id)
+        if id in amounts:
+            amounts[id]
+            amounts[id] += amount
+            with open('amounts.json', 'w+') as f:
+                json.dump(amounts, f)
         return
-    id = str(ctx.message.author.id)
-    if id in amounts:
-        amounts[id]
-        amounts[id] += amount
-        with open('amounts.json', 'w+') as f:
-            json.dump(amounts, f)
 @collect.error
 async def collect_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
@@ -406,7 +438,7 @@ async def beg(ctx):
     ans = await ctx.bot.wait_for('message', check=lambda message: message.author == ctx.author)
     if ans.content.lower() == "s":
         poss=random.randint(0,100)
-        if poss > 85:
+        if poss > 80:
             await ctx.send("You wernt being careful and got a little too close to the cars. Needless to say, you were ran over and died.")
             if id in amounts:
                 amounts[id]
@@ -418,62 +450,115 @@ async def beg(ctx):
         chance=random.randint(0,100)
         if chance > 70 and chance < 80:
             await ctx.send("So you didn't get run over by a car, and managed to get " + str(num) + " coins, AND a 🍬 **Breath Mint**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 80 and chance < 90:
             await ctx.send("So you didn't get run over by a car, and managed to get " + str(num) + " coins, AND a 🧀 **cheese slices**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 90 and chance < 95:
             await ctx.send("So you didn't get run over by a car, and managed to get " + str(num) + " coins, AND a 🎻 **violin**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 95 and chance < 95:
             await ctx.send("So you didn't get run over by a car, and managed to get " + str(num*2) + " coins. If you didn't know, you got DOUBLE THE COINS!")
+            id = str(ctx.message.author.id)
+            if id in amounts:
+                amounts[id]
+                spcamt=num*2
+                amounts[id] += spcamt
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 99:
             await ctx.send("So you didn't get run over by a car, and managed to get " + str(num) + " coins, AND a 🌌 **galaxy badge**!!!!!!!!! LUCKY!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         else:
             await ctx.send("So you didn't get run over by a car, and managed to get " + str(num) + " coins from people who liked your stories.")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
-        if id in amounts:
-            amounts[id]
-            amounts[id] += num
-            with open('amounts.json', 'w+') as f:
-                json.dump(amounts, f)
     if ans.content.lower() == "h":
         poss=random.randint(0,100)
-        if poss > 80:
+        if poss > 75:
             await ctx.send('Famous last words: "i wont get covid here lol".')
             if id in amounts:
                 amounts[id]
                 amounts[id]=0
                 with open('amounts.json', 'w+') as f:
                     json.dump(amounts, f)
-                return
         num=random.randint(0,250)
         chance=random.randint(0,100)
         if chance > 70 and chance < 80:
             await ctx.send("You didnt get covid... and got " + str(num) + " coins, AND a 🍬 **Breath Mint**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 80 and chance < 90:
             await ctx.send("You didnt get covid... and got " + str(num) + " coins, AND a 🧀 **cheese slices**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 90 and chance < 95:
             await ctx.send("You didnt get covid... and got " + str(num) + " coins, AND a 🎻 **violin**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 95 and chance < 95:
             await ctx.send("You didnt get covid... and got " + str(num*2) + " coins. If you didn't know, you got DOUBLE THE COINS!")
+            id = str(ctx.message.author.id)
+            if id in amounts:
+                amounts[id]
+                spcamt=num*2
+                amounts[id] += spcamt
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 99:
             await ctx.send("You didnt get covid... and got " + str(num) + " coins, AND a 🌌 **galaxy badge**!!!!!!!!! LUCKY!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         else:
             await ctx.send("You didnt get covid... and got " + str(num) + " coins as a prize!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
-        if id in amounts:
-            amounts[id]
-            amounts[id] += num
-            with open('amounts.json', 'w+') as f:
-                json.dump(amounts, f)
     if ans.content.lower() == "r":
         num=random.randint(0,1)
         await ctx.send("bruh. You serious? well at least you managed to find " + str(num) + " coins lying arround the couch")
@@ -484,7 +569,7 @@ async def beg(ctx):
                 json.dump(amounts, f)
     if ans.content.lower() == "a":
         poss=random.randint(0,100)
-        if poss > 75:
+        if poss > 50:
             await ctx.send('dude I told you to not get close to the airplanes.')
             if id in amounts:
                 amounts[id]
@@ -496,27 +581,54 @@ async def beg(ctx):
         chance=random.randint(0,100)
         if chance > 70 and chance < 80:
             await ctx.send("Noice. you manged to steal " + str(num) + " coins, AND a 🍬 **Breath Mint**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 80 and chance < 90:
             await ctx.send("Noice. you manged to steal " + str(num) + " coins, AND a 🧀 **cheese slices**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 90 and chance < 95:
             await ctx.send("Noice. you manged to steal " + str(num) + " coins, AND a 🎻 **violin**!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 95 and chance < 95:
             await ctx.send("Noice. you manged to steal " + str(num*2) + " coins. If you didn't know, you got DOUBLE THE COINS!")
+            id = str(ctx.message.author.id)
+            if id in amounts:
+                amounts[id]
+                spcamt=num*2
+                amounts[id] += spcamt
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         if chance > 99:
             await ctx.send("Noice. you manged to steal " + str(num) + " coins, AND a 🌌 **galaxy badge**!!!!!!!!! LUCKY!!!")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
         else:
             await ctx.send("Noice. you manged to steal " + str(num) + "  coins from under the pilot's noses.")
+            if id in amounts:
+                amounts[id]
+                amounts[id] += num
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
             return
-        if id in amounts:
-            amounts[id]
-            amounts[id] += num
-            with open('amounts.json', 'w+') as f:
-                json.dump(amounts, f)
 @beg.error
 async def beg_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
@@ -529,5 +641,31 @@ async def beg_error(ctx, error):
     else:
         raise error
 
+# bet
+@client.command()
+async def bet(ctx, amount : int):
+    user = str(ctx.author.id)
+    bot = random.randint(1, 12)
+    user = random.randint(1, 12)
+    if user in amounts and amount <= amounts[user] and amount > 0:
+        if user > bot:
+            amounts[user] += amount
+            embed = discord.Embed(title=f"You won!", description=f"You won {amount} coins! \n(the bot chose: {bot}, you chose: {user})", color=2067276)
+            await ctx.send(embed=embed)
+            
+        else:
+            amounts[user] -= amount
+            embed = discord.Embed(title=f"You lost!", description=f"You lost {amount} coins! \n(the bot chose: {bot}, you chose: {user})", color=2067276)
+            await ctx.send(embed=embed)
+        with open('amounts.json', 'w+') as i:
+            json.dump(amounts, i)
+    else:
+        if user not in amounts[user]:
+            await ctx.send(f"yea u don't have an account yet...")
+        elif amount <= 0:
+            await ctx.send(f'Bro, why would u want to gamble {amount} coins')
+        else:
+            await ctx.send("ayo, don't try to cheat me, you don't have enough coins.")
 
-client.run('')
+
+client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.X174DFuruAHeaJLKUt5th28gwDc')
