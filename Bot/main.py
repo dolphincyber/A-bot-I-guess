@@ -18,7 +18,8 @@ async def on_ready():
 # invite
 @client.command()
 async def invite(ctx):
-    await ctx.send("here is the link to invite the bot:\nhttps://discord.com/api/oauth2/authorize?client_id=755533232417800192&permissions=8&scope=bot")
+    embed = discord.Embed(title="Invite Nebula To your own server!", description="[Here is the link](https://discord.com/api/oauth2/authorize?client_id=755533232417800192&permissions=8&scope=bot)", color=discord.Color.blue())
+    await ctx.send(embed=embed)
 
 #help
 @client.command(pass_context=True)
@@ -114,67 +115,6 @@ async def bug_error(ctx, error):
     else:
         raise error
 
-# # Kick
-# @client.command()
-# @commands.has_permissions(kick_members=True)
-# async def kick(ctx, member : discord.Member, *,reason=None):
-#     await member.kick(reason=reason)
-#     embed = discord.Embed(title=f"{member} has been kicked", description=str(reason), color=0)
-#     await ctx.send(embed=embed)
-
-# # Ban
-# @client.command()
-# @commands.has_permissions(ban_members=True)
-# async def ban(ctx, member : discord.Member, *,reason=None):
-#     await member.ban(reason=reason)
-#     embed = discord.Embed(title=f"{member} has been banned", description=str(reason), color=0)
-#     await ctx.send(embed=embed)
-
-# # Unban
-# @client.command()
-# async def unban(ctx, *, member):
-#     banned_users = await ctx.guild.bans()
-#     member_name, member_discriminator = member.split("#")
-
-#     for ban_entry in banned_users:
-#         user = ban_entry.user
-
-#         if (user.name, user.discriminator) == (member_name, member_discriminator):
-#             await ctx.guild.unban(user)
-#             await ctx.send(f'{user.name}#{user.discriminator} has been unbanned.')
-#             return
-
-# # Mute
-# @client.command()
-# async def mute(ctx, *, member : discord.Member):
-#     guild = ctx.guild
-
-#     for role in guild.roles:
-#         if role.name == "Muted":
-#             await member.add_roles(role)
-#             await ctx.send("{} has {} been muted" .format(member.mention,ctx.author.mention))
-#             return
-
-#             overwrite = discord.PermissionOverwrite(send_messages=False)
-#             newRole = await guild.create_role(name="Muted")
-
-#             for channel in guild.text_channels:
-#                 await guild.channel.set_permissions(newRole,overwrite=overwrite)
-
-#             await member.add_roles(newRole)
-#             await ctx.send("{} has {} has been muted" .format(member.mention,ctx.author.mention))
-
-# # Unmute
-# @client.command()
-# async def unmute(ctx, *, member : discord.Member):
-#     guild = ctx.guild
-
-#     for role in guild.roles:
-#         if role.name == "Muted":
-#             await member.remove_roles(role)
-#             await ctx.send("{} has {} has been unmuted" .format(member.mention,ctx.author.mention))
-#             return
-
 # google
 @client.command()
 async def google(ctx, *, search):
@@ -236,19 +176,70 @@ if os.path.exists('amounts.json'):
        amounts = json.load(file)
 else:
    amounts = {}
-# Save file
-def _save():
-    with open('amounts.json', 'w+') as f:
-       json.dump(amounts, f)
+if os.path.exists('items\\cheesse.json'):
+   with open('items\\cheesse.json', 'r') as file:
+       cheese = json.load(file)
+else:
+   cheese = {}
+if os.path.exists('items\\cookie.json'):
+   with open('items\\cookie.json', 'r') as file:
+       cookie = json.load(file)
+else:
+   cookie = {}
+if os.path.exists('items\\galaxy.json'):
+   with open('items\\galaxy.json', 'r') as file:
+       galaxy = json.load(file)
+else:
+   galaxy = {}
+if os.path.exists('items\\medal.json'):
+   with open('items\\medal.json', 'r') as file:
+       medal = json.load(file)
+else:
+   medal = {}
+if os.path.exists('items\\mint.json'):
+   with open('items\\mint.json', 'r') as file:
+       mint = json.load(file)
+else:
+   mint = {}
+if os.path.exists('items\\trophy.json'):
+   with open('items\\trophy.json', 'r') as file:
+       trophy = json.load(file)
+else:
+   trophy = {}
+if os.path.exists('items\\violin.json'):
+   with open('items\\violin.json', 'r') as file:
+       violin = json.load(file)
+else:
+   violin = {}
 
 #start
 @client.command(pass_context=True)
 async def start(ctx):
     id = str(ctx.message.author.id)
-    if id not in amounts.keys():
-       amounts[id]=0
-       await ctx.send("You are now registered")
-       _save()
+    if id not in amounts.keys() or cheese.keys() or cookie.keys() or galaxy.keys() or medal.keys() or mint.keys() or trophy.keys() or violin.keys():
+        amounts[id]=0
+        cheese[id]=0
+        cookie[id]=0
+        galaxy[id]=0
+        medal[id]=0
+        mint[id]=0
+        trophy[id]=0
+        violin[id]=0
+        await ctx.send("You are now registered")
+        with open('items\\cheese.json', 'w+') as f:
+            json.dump(amounts, f)
+        with open('items\\cookie.json', 'w+') as f:
+            json.dump(cookie, f)
+        with open('items\\galaxy.json', 'w+') as f:
+            json.dump(galaxy, f)
+        with open('items\\medal.json', 'w+') as f:
+            json.dump(medal, f)
+        with open('items\\mint.json', 'w+') as f:
+            json.dump(mint, f)
+        with open('items\\trophy.json', 'w+') as f:
+            json.dump(trophy, f)
+        with open('items\\violin.json', 'w+') as f:
+            json.dump(violin, f)
     else:
        await ctx.send("You already have an account")
 
@@ -292,9 +283,41 @@ async def shop_error(ctx, error):
     else:
         raise error
 
+@client.command()
+async def buy(ctx, item):
+  user = str(ctx.author.id)
+  if item == 'violin' and money in user and user[money] >= 2000:
+    user[money] -= 2000
+    if violin in user:
+      user[violin] += 1
+    else:
+      user[violin] = 1
+  elif ...
+  # elif all other products
+  else:
+    await ctx.send('You can\'t afford that!')
+  with open('inv.json', 'w+') as i:
+    json.dump(user, i)
+
+#inv
+@client.command()
+async def inventory(ctx):
+    id=str(ctx.message.author.id)
+    if id in cheese and cookie and galaxy and medal and mint and trophy and violin:
+        embed = discord.Embed(title='Your inventory:', description="check out all your items")
+        embed.add_field(name='Mints 🍬:', value=mint[id], inline=False)
+        embed.add_field(name='Cheese slices 🧀:', value=cheese[id], inline=False)
+        embed.add_field(name='Cookies 🍪:', value=cookie[id], inline=False)
+        embed.add_field(name='Violins 🎻:', value=violin[id], inline=False)
+        embed.add_field(name='Galaxy badges 🌌:', value=galaxy[id], inline=False)
+        embed.add_field(name='Galaxy medals 🎖️:', value=medal[id], inline=False)
+        embed.add_field(name='Galaxy trophys 🏆:', value=trophy[id], inline=False)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("you don't have an account")
+
 #bal
 @client.command(pass_context=True)
-@commands.cooldown(1, 10, commands.BucketType.user)
 async def bal(ctx):
     id = str(ctx.message.author.id)
     if id in amounts:
@@ -315,17 +338,6 @@ async def bal(ctx):
             await ctx.send(embed=embed)
     else:
         await ctx.send("You do not have an account")
-@bal.error
-async def bal_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        msg = '{:.2f}s'.format(error.retry_after)
-        embed=discord.Embed(
-            colour = discord.Colour.red()
-        )
-        embed.add_field(name='You already ran this command! Please try again in ', value=msg)
-        await ctx.send(embed=embed)
-    else:
-        raise error
 
 # cook
 @client.command()
@@ -432,48 +444,69 @@ async def daily_error(ctx, error):
 # search
 @client.command()
 @commands.cooldown(1, 30, commands.BucketType.user)
-async def search(ctx, value):
-    if value == "":
+async def search(ctx, value="0"):
+    id = str(ctx.message.author.id)
+    value=int(value)
+    if value == "0":
         await ctx.send("how much money do you want to bring with you on ur search bro u need to tell me.")
+        return
+    elif value > amounts[id]:
+        await ctx.send("don't try to trick me u don't have enough coins.")
     elif value < 1000:
         poss=random.randint(0,100)
         if poss > 90:
             await ctx.send("oop, someone stole all ur coins. sad.")
             if id in amounts:
                 amounts[id]
-                amounts[id]-value
+                amounts[id] - value
                 with open('amounts.json', 'w+') as f:
                     json.dump(amounts, f)
-                return
+            return
         else:
             coins=random.randint(0,500)
             await ctx.send(f"nice you collected {coins} coins on the street.")
             if id in amounts:
                 amounts[id]
-                amounts[id]=0
+                amounts[id] += coins
                 with open('amounts.json', 'w+') as f:
                     json.dump(amounts, f)
-                return
+            return
     else:
         poss=random.randint(0,100)
-        if poss > 75:
+        if poss > 50:
             await ctx.send("oop, someone stole all ur coins. sad.")
             if id in amounts:
                 amounts[id]
-                amounts[id]-value
+                amounts[id] - value
                 with open('amounts.json', 'w+') as f:
                     json.dump(amounts, f)
-                return
+            return
         else:
             coins=random.randint(0,500)
-            total=coins+value
+            multi=random.randint (1,3)
+            total=coins+value*multi
             await ctx.send(f"u did the risky play, and got {total} coins. nice.")
             if id in amounts:
                 amounts[id]
-                amounts[id]=0
+                amounts[id] += total
+                print(amounts[id])
                 with open('amounts.json', 'w+') as f:
                     json.dump(amounts, f)
                 return
+            else:
+                await ctx.send("you don't have an account.")
+@search.error
+async def search_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = '{:.2f}s'.format(error.retry_after)
+        embed=discord.Embed(
+            colour = discord.Colour.red()
+        )
+        embed.add_field(name='You already ran this command! Please try again in ', value=msg)
+        await ctx.send(embed=embed)
+    else:
+        raise error
+
 # beg
 @client.command()
 @commands.cooldown(1, 45, commands.BucketType.user)
@@ -689,23 +722,23 @@ async def beg_error(ctx, error):
 # bet
 @client.command()
 async def bet(ctx, amount : int):
-    user = str(ctx.author.id)
+    id = str(ctx.message.author.id)
     bot = random.randint(1, 12)
     user = random.randint(1, 12)
-    if user in amounts and amount <= amounts[user] and amount > 0:
-        if user > bot:
-            amounts[user] += amount
+    if user in amounts and amount <= amounts[id] and amount > 0:
+        if user > bot and id in amounts:
+            amounts[id] += amount
             embed = discord.Embed(title=f"You won!", description=f"You won {amount} coins! \n(the bot chose: {bot}, you chose: {user})", color=2067276)
             await ctx.send(embed=embed)
             
         else:
-            amounts[user] -= amount
+            amounts[id] - amount
             embed = discord.Embed(title=f"You lost!", description=f"You lost {amount} coins! \n(the bot chose: {bot}, you chose: {user})", color=2067276)
             await ctx.send(embed=embed)
         with open('amounts.json', 'w+') as i:
             json.dump(amounts, i)
     else:
-        if user not in amounts[user]:
+        if user not in amounts[id]:
             await ctx.send(f"yea u don't have an account yet...")
         elif amount <= 0:
             await ctx.send(f'Bro, why would u want to gamble {amount} coins')
@@ -713,4 +746,4 @@ async def bet(ctx, amount : int):
             await ctx.send("ayo, don't try to cheat me, you don't have enough coins.")
 
 
-client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.ev2B05nEaCvytjuBxb6oyRV4_SQ')
+client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.ynHa6RNEzI27ir-YA7l-q1r7skM')
