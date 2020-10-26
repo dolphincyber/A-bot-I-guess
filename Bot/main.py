@@ -80,7 +80,7 @@ async def rulemake(ctx):
 @client.command()
 async def info(ctx):
     embed = discord.Embed(title="Bot Info", description="Bot by NIHԀ˥Op#2625")
-    embed.add_field(name="**Bot version**", value="`V.0.1.2                 `", inline=True)
+    embed.add_field(name="**Bot version**", value="`V.0.1.6                 `", inline=True)
     embed.add_field(name="**Built with**", value="`Python3.8                `", inline=True)
     embed.add_field(name="**contributors**", value="`ALoneParadox#8583, Frostt#1324`")
     embed.add_field(name="**This bot was made on**", value="`September 15th, 2020     `", inline=False)
@@ -429,6 +429,51 @@ async def daily_error(ctx, error):
     else:
         raise error
 
+# search
+@client.command()
+@commands.cooldown(1, 30, commands.BucketType.user)
+async def search(ctx, value):
+    if value == "":
+        await ctx.send("how much money do you want to bring with you on ur search bro u need to tell me.")
+    elif value < 1000:
+        poss=random.randint(0,100)
+        if poss > 90:
+            await ctx.send("oop, someone stole all ur coins. sad.")
+            if id in amounts:
+                amounts[id]
+                amounts[id]-value
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
+        else:
+            coins=random.randint(0,500)
+            await ctx.send(f"nice you collected {coins} coins on the street.")
+            if id in amounts:
+                amounts[id]
+                amounts[id]=0
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
+    else:
+        poss=random.randint(0,100)
+        if poss > 75:
+            await ctx.send("oop, someone stole all ur coins. sad.")
+            if id in amounts:
+                amounts[id]
+                amounts[id]-value
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
+        else:
+            coins=random.randint(0,500)
+            total=coins+value
+            await ctx.send(f"u did the risky play, and got {total} coins. nice.")
+            if id in amounts:
+                amounts[id]
+                amounts[id]=0
+                with open('amounts.json', 'w+') as f:
+                    json.dump(amounts, f)
+                return
 # beg
 @client.command()
 @commands.cooldown(1, 45, commands.BucketType.user)
@@ -668,4 +713,4 @@ async def bet(ctx, amount : int):
             await ctx.send("ayo, don't try to cheat me, you don't have enough coins.")
 
 
-client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.X174DFuruAHeaJLKUt5th28gwDc')
+client.run('NzU1NTMzMjMyNDE3ODAwMTky.X2ErJw.ev2B05nEaCvytjuBxb6oyRV4_SQ')

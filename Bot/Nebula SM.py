@@ -121,15 +121,15 @@ async def rank(ctx):
     else:
         await ctx.send('No Level')
 
-@client.event
-async def on_message(message):
-    user = str(message.author.id)
-    if user in count:
-        count[id] += 1
-    else:
-        count[id] = 1
-    with open('count.json','w+') as file:
-        json.dump(count, file)
+#@client.event
+#async def on_message(message):
+#    user = str(message.author.id)
+#    if user in count:
+#        count[id] += 1
+#    else:
+#        count[id] = 1
+#    with open('count.json','w+') as file:
+#        json.dump(count, file)
 
 # warn
 @client.command(pass_context=True)
@@ -227,4 +227,4 @@ async def unmute(ctx, *, member : discord.Member):
             return
 
 
-client.run('NzYwOTQ1MjE5ODEzNzY5Mjg2.X3Tbdg.OEZs7ujHG0itED66mHLhu1YKv6M')
+client.run('NzYwOTQ1MjE5ODEzNzY5Mjg2.X3Tbdg.hM3Q2U4sTY7PABtFjmLts4Bk_Dk')
